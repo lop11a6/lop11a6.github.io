@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khảo Sát Bệnh Học</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Particles Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        /* Cherry Blossom Petals */
+        .petal {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: radial-gradient(circle, #ffb3d9 0%, #ff6bc7 100%);
+            border-radius: 50% 0 50% 0;
+            opacity: 0.8;
+            animation: fall linear infinite;
+            z-index: 2;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            max-width: 750px;
+            width: 100%;
+            padding: 50px;
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-decoration {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sparkle {
+            display: inline-block;
+            font-size: 2em;
+            animation: sparkleAnim 1.5s ease-in-out infinite;
+        }
+
+        @keyframes sparkleAnim {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 800;
+            animation: titleFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 35px;
+            font-size: 1em;
+            animation: fadeIn 1s ease-in 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            animation: slideInLeft 0.6s ease-out;
+            animation-fill-mode: both;
+            position: relative;
+        }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
+        .form-group:nth-child(4) { animation-delay: 0.4s; }
+        .form-group:nth-child(5) { animation-delay: 0.5s; }
+        .form-group:nth-child(6) { animation-delay: 0.6s; }
+        .form-group:nth-child(7) { animation-delay: 0.7s; }
+        .form-group:nth-child(8) { animation-delay: 0.8s; }
+        .form-group:nth-child(9) { animation-delay: 0.9s; }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 700;
+            font-size: 1em;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        label::before {
+            content: "✦";
+            position: absolute;
+            left: 0;
+            color: #764ba2;
+            font-size: 1.2em;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 3px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1em;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            background: white;
+        }
+
+        input[type="text"]:hover,
+        input[type="date"]:hover,
+        textarea:hover {
+            border-color: #b8a0d6;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .hint {
+            font-size: 0.88em;
+            color: #888;
+            margin-top: 8px;
+            font-style: italic;
+            padding-left: 5px;
+            border-left: 3px solid #f093fb;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.88em;
+            margin-top: 8px;
+            display: none;
+            font-weight: 600;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        input.error,
+        textarea.error {
+            border-color: #e74c3c;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            margin: 10% auto;
+            padding: 50px;
+            border-radius: 30px;
+            max-width: 450px;
+            text-align: center;
+            animation: modalSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            position: relative;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: scale(0.7) translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .modal h2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+
+        .close-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .close-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .credit {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px dashed #e0e0e0;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .credit p {
+            color: #764ba2;
+            font-weight: 600;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .credit-icon {
+            display: inline-block;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 25px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .submit-btn {
+                padding: 15px 40px;
+                font-size: 1.1em;
+            }
+        }
+
+        /* Floating shapes decoration */
+        .shape {
+            position: fixed;
+            opacity: 0.1;
+            animation: floatShape 20s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .shape-1 {
+            top: 10%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            top: 60%;
+            right: 10%;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #f093fb, #667eea);
+            border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+            animation-delay: 5s;
+        }
+
+        .shape-3 {
+            bottom: 10%;
+            left: 15%;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #764ba2, #f093fb);
+            border-radius: 50% 50% 30% 70% / 50% 30% 70% 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes floatShape {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(20px, -20px) rotate(90deg);
+            }
+            50% {
+                transform: translate(-20px, 20px) rotate(180deg);
+            }
+            75% {
+                transform: translate(20px, 20px) rotate(270deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Floating Shapes -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+
+    <div class="container">
+        <div class="header-decoration">
+            <span class="sparkle">✨</span>
+            <span class="sparkle" style="animation-delay: 0.3s;">🌸</span>
+            <span class="sparkle" style="animation-delay: 0.6s;">✨</span>
+        </div>
+
+        <h1>Khảo Sát Bệnh Học</h1>
+        <p class="subtitle">Vui lòng điền đầy đủ thông tin vào các mục bên dưới</p>
+
+        <form id="surveyForm">
+            <div class="form-group">
+                <label for="name">Họ và tên<span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder=" ">
+            </div>
+
+            <div class="form-group">
+                <label for="class">Lớp<span class="required">*</span></label>
+                <input type="text" id="class" name="class" required placeholder="11A1, 11A2, 11A3, v.v.">
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Ngày tháng năm sinh<span class="required">*</span></label>
+                <input type="date" id="dob" name="dob" required>
+                <p class="error-message" id="ageError">⚠️ Bạn phải từ 14 tuổi trở lên để tham gia khảo sát</p>
+            </div>
+
+            <div class="form-group">
+                <label for="disease">1. Bệnh đã mắc phải<span class="required">*</span></label>
+                <textarea id="disease" name="disease" required placeholder="Ví dụ: Cúm, sốt xuất huyết, tiêu chảy..."></textarea>
+                <p class="hint">Ghi tên bệnh bạn đã bị</p>
+            </div>
+
+            <div class="form-group">
+                <label for="source">2. Bị lây từ đâu?<span class="required">*</span></label>
+                <textarea id="source" name="source" required placeholder="Ví dụ: Người thân trong nhà, bạn bè ở trường, người lạ, tự nhiên mắc bệnh..."></textarea>
+                <p class="hint">Bạn nghĩ mình bị lây bệnh từ ai hoặc từ đâu</p>
+            </div>
+
+            <div class="form-group">
+                <label for="pathogen">3. Tác nhân gây bệnh<span class="required">*</span></label>
+                <textarea id="pathogen" name="pathogen" required placeholder="Ví dụ: Vi khuẩn, vi rút, ký sinh trùng, nấm..."></textarea>
+                <p class="hint">Loại sinh vật gây bệnh (nếu biết)</p>
+            </div>
+
+            <div class="form-group">
+                <label for="transmission">4. Cách lây truyền<span class="required">*</span></label>
+                <textarea id="transmission" name="transmission" required placeholder="Ví dụ: Ho hắt hơi, muỗi đốt, ăn đồ ăn bẩn, uống nước không sạch..."></textarea>
+                <p class="hint">Bệnh lây sang người khác như thế nào</p>
+            </div>
+
+            <div class="form-group">
+                <label for="treatment">5. Cách chữa trị<span class="required">*</span></label>
+                <textarea id="treatment" name="treatment" required placeholder="Ví dụ: Uống thuốc, nghỉ ngơi, đi khám bác sĩ, truyền nước..."></textarea>
+                <p class="hint">Bạn đã làm gì để khỏi bệnh</p>
+            </div>
+
+            <div class="form-group">
+                <label for="prevention">6. Cách phòng bệnh<span class="required">*</span></label>
+                <textarea id="prevention" name="prevention" required placeholder="Ví dụ: Rửa tay, đeo khẩu trang, tiêm phòng, diệt muỗi, ăn chín uống sôi..."></textarea>
+                <p class="hint">Làm gì để tránh bị bệnh này</p>
+            </div>
+
+            <button type="submit" class="submit-btn">✓ Gửi Khảo Sát</button>
+        </form>
+
+        <div class="credit">
+            <p><span class="credit-icon">🎓</span> Khảo sát bởi: Lớp 11A6 - dp <span class="credit-icon">🎓</span></p>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">🎉</div>
+            <h2>Gửi Thành Công!</h2>
+            <p>Cảm ơn bạn đã hoàn thành khảo sát. Thông tin của bạn đã được ghi nhận và sẽ được xử lý để phục vụ mục đích nghiên cứu.</p>
+            <button class="close-btn" onclick="closeModal()">Đóng</button>
+        </div>
+    </div>
+
+    <!-- Particles.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    
+    <script>
+        // Particles Configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: ['#667eea', '#764ba2', '#f093fb', '#ffb3d9'] },
+                shape: { 
+                    type: ['circle', 'triangle'],
+                    stroke: { width: 0, color: '#000000' }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: { enable: true, speed: 1, opacity_min: 0.1, sync: false }
+                },
+                size: {
+                    value: 4,
+                    random: true,
+                    anim: { enable: true, speed: 2, size_min: 0.1, sync: false }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ffffff',
+                    opacity: 0.3,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: { enable: true, mode: 'repulse' },
+                    onclick: { enable: true, mode: 'push' },
+                    resize: true
+                },
+                modes: {
+                    repulse: { distance: 100, duration: 0.4 },
+                    push: { particles_nb: 4 }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Cherry Blossom Petals
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            petal.style.left = Math.random() * 100 + 'vw';
+            petal.style.animationDuration = (Math.random() * 3 + 5) + 's';
+            petal.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(petal);
+
+            setTimeout(() => {
+                petal.remove();
+            }, 15000);
+        }
+
+        // Create petals periodically
+        setInterval(createPetal, 300);
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createPetal, i * 200);
+        }
+
+        // Form Handling
+        const form = document.getElementById('surveyForm');
+        const modal = document.getElementById('modal');
+        const dobInput = document.getElementById('dob');
+        const ageError = document.getElementById('ageError');
+
+        dobInput.addEventListener('change', function() {
+            const age = calculateAge(this.value);
+            if (age < 14) {
+                this.classList.add('error');
+                ageError.classList.add('show');
+            } else {
+                this.classList.remove('error');
+                ageError.classList.remove('show');
+            }
+        });
+
+        function calculateAge(birthDate) {
+            const today = new Date();
+            const birth = new Date(birthDate);
+            let age = today.getFullYear() - birth.getFullYear();
+            const monthDiff = today.getMonth() - birth.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                age--;
+            }
+            
+            return age;
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const age = calculateAge(dobInput.value);
+            if (age < 14) {
+                dobInput.classList.add('error');
+                ageError.classList.add('show');
+                dobInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('name').value,
+                class: document.getElementById('class').value,
+                dob: document.getElementById('dob').value,
+                age: age,
+                disease: document.getElementById('disease').value,
+                source: document.getElementById('source').value,
+                pathogen: document.getElementById('pathogen').value,
+                transmission: document.getElementById('transmission').value,
+                treatment: document.getElementById('treatment').value,
+                prevention: document.getElementById('prevention').value
+            };
+
+            console.log('Dữ liệu khảo sát:', formData);
+            
+            modal.style.display = 'block';
+        });
+
+        function closeModal() {
+            modal.style.display = 'none';
+            form.reset();
+            dobInput.classList.remove('error');
+            ageError.classList.remove('show');
+        }
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Add ripple effect to inputs on focus
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+            });
+        });
+    </script>
+</body>
+</html>
